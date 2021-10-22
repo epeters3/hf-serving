@@ -2,7 +2,7 @@ import typing as t
 
 from pydantic import BaseModel
 
-from hf_serving.pipeline.types.base import InputModel, OutputModel, PipelineTypes
+from hf_serving.pipeline.specs.base import InputModel, OutputModel, PipelineSpec
 
 
 class SummarizationInputs(InputModel):
@@ -24,4 +24,9 @@ class SummarizationOutputs(OutputModel):
         return cls(predictions=[Summary(summaryText=item["summary_text"]) for item in output])
 
 
-summarization = PipelineTypes(task="summarization", input_model=SummarizationInputs, output_model=SummarizationOutputs)
+summarization = PipelineSpec(
+    docs_link="https://huggingface.co/transformers/main_classes/pipelines.html#summarizationpipeline",
+    task_name_matches=lambda name: name == "summarization",
+    input_model=SummarizationInputs,
+    output_model=SummarizationOutputs
+)

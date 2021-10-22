@@ -2,18 +2,21 @@ import typing as t
 
 from transformers import pipeline
 
-from hf_serving.pipeline.types import pipeline_types
-from hf_serving.pipeline.types.base import InputModel
+from hf_serving.pipeline.specs import get_pipeline_spec
+from hf_serving.pipeline.specs.base import InputModel
 
 
 class TypedPipeline:
     """
-    Thin wrapper over `transformers.pipeline`, which has pydantic models expressing the types of the pipeline's inputs
+    Thin wrapper over `transformers.pipeline`, which has pydantic models expressing the specs of the pipeline's inputs
     and outputs.
     """
 
     def __init__(self, task: str, model: t.Optional[str] = None, tokenizer: t.Optional[str] = None):
-        self.spec = pipeline_types[task]
+        spec = get_pipeline_spec(task)
+        if spec is None:
+            raise ValueError(f"The {task} pipeline is currently unsupported.")
+        self.spec = spec
         self._pipe = pipeline(task=task, model=model, tokenizer=tokenizer)
 
     def __call__(self, inputs: InputModel):
