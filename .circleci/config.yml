@@ -1,0 +1,17 @@
+version: 2.1
+
+jobs:
+  build-push:
+    branches:
+      only: main
+    docker:
+      - image: docker:20.10.9-alpine3.14
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Build
+          command: scripts/build-image.sh
+      - run:
+          name: Push
+          command: scripts/push-image.sh
