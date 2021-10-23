@@ -9,10 +9,10 @@ jobs:
       - checkout
       - run:
           name: Build
-          command: scripts/build-image.sh
+          command: ./scripts/build-image.sh
       - run:
           name: Push
-          command: scripts/push-image.sh
+          command: ./scripts/push-image.sh
 
 workflows:
   build_push:
