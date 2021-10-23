@@ -1,9 +1,7 @@
 version: 2.1
 
 jobs:
-  build-push:
-    branches:
-      only: main
+  build_push:
     docker:
       - image: docker:20.10.9-alpine3.14
     steps:
@@ -15,3 +13,11 @@ jobs:
       - run:
           name: Push
           command: scripts/push-image.sh
+
+workflows:
+  build_push:
+    jobs:
+      - build_push:
+          filters:
+            branches:
+              only: main
