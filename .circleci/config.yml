@@ -8,6 +8,9 @@ jobs:
       - setup_remote_docker
       - checkout
       - run:
+          name: Install
+          command: apk update && apk upgrade && apk add bash
+      - run:
           name: Build
           command: ./scripts/build-image.sh
       - run:
